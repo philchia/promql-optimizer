@@ -1,7 +1,6 @@
 package optimizer
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 
@@ -9,13 +8,13 @@ import (
 	"github.com/prometheus/prometheus/promql/parser"
 )
 
-func OptimizeQuery(ql string) string {
+func OptimizeQuery(ql string) (string, error) {
 	expr, err := parser.ParseExpr(ql)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
-	return OptimizeExpr(expr).String()
+	return OptimizeExpr(expr).String(), nil
 }
 
 func OptimizeExpr(expr parser.Expr) parser.Expr {
@@ -29,7 +28,7 @@ func Clone(e parser.Expr) parser.Expr {
 	s := e.String()
 	eCopy, err := parser.ParseExpr(s)
 	if err != nil {
-		panic(fmt.Errorf("BUG: cannot parse the expression %q: %w", s, err))
+		panic("BUG: impossible !!!")
 	}
 	return eCopy
 }
